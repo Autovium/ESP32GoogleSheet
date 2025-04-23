@@ -1,0 +1,40 @@
+var sheet_id = "1Nhknr-SIUE0_xOyA3FCwHHRV9vAjLlYS2TMRzM7rJN8";
+var sheet_name = "BPMS001";
+
+function doGet(e){
+var read = (e.parameter.read);
+var alert = (e.parameter.alert);
+var timestamp = (e.parameter.timestamp);
+var pressure = Number(e.parameter.pressure);
+var cutoff = Number(e.parameter.cutoff);
+var systemStatus = (e.parameter.systemStatus);
+var bpmsId = (e.parameter.BPMSID);
+var ss = SpreadsheetApp.openById(sheet_id);
+var sheet = ss.getSheetByName(bpmsId);
+var dash = ss.getSheetByName("Dashboard");
+
+var data = "&areaBPMS001&"+dash.getRange('A4').getValue()+"&pressureBPMS001&"+dash.getRange('D4').getValue()+"&alertBPMS001&"+dash.getRange('G4').getValue()+"&areaBPMS002&"+dash.getRange('A6').getValue()+"&pressureBPMS002&"+dash.getRange('D6').getValue()+"&alertBPMS002&"+dash.getRange('G6').getValue()+"&areaBPMS003&"+dash.getRange('A8').getValue()+"&pressureBPMS003&"+dash.getRange('D8').getValue()+"&alertBPMS003&"+dash.getRange('G8').getValue()+"&areaBPMS004&"+dash.getRange('A10').getValue()+"&pressureBPMS004&"+dash.getRange('D10').getValue()+"&alertBPMS004&"+dash.getRange('G10').getValue()+"&areaBPMS005&"+dash.getRange('A12').getValue()+"&pressureBPMS005&"+dash.getRange('D12').getValue()+"&alertBPMS005&"+dash.getRange('G12').getValue()+"&areaBPMS006&"+dash.getRange('A14').getValue()+"&pressureBPMS006&"+dash.getRange('D14').getValue()+"&alertBPMS006&"+dash.getRange('G14').getValue();
+
+
+if (timestamp !== undefined){
+  sheet.appendRow([,,,,,timestamp,pressure,cutoff,systemStatus,bpmsId]);
+  if(bpmsId=="BPMS001"){
+    dash.getRange('B4').setValue(bpmsId);
+    dash.getRange('F4').setValue(systemStatus);
+    dash.getRange('C4').setValue(timestamp);
+    dash.getRange('D4').setValue(pressure);
+    dash.getRange('E4').setValue(cutoff);
+    dash.getRange('F4').setValue(systemStatus);
+    if(alert=="1"){
+      dash.getRange('G4').setValue("Yes");
+    }else{
+      dash.getRange('G4').setValue("No");
+    }
+  }
+  return ContentService.createTextOutput("Sucessfull");
+}
+if (read !== undefined){
+    return ContentService.createTextOutput(data);
+}
+
+}
